@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Task } from "@/lib/tasks";
 import { Sidebar } from "./Sidebar";
 import { TaskDetail } from "./TaskDetail";
+import { Onboarding } from "./Onboarding";
+import { checkReminders, maybeMorningBriefing } from "@/lib/notifications";
 
 export function AppShell({
   children,
@@ -41,6 +43,15 @@ export function AppShell({
     return () => { mounted = false; supabase.removeChannel(channel); };
   }, [user]);
 
+  // Påmindelser + morgenbriefing
+  useEffect(() => {
+    if (tasks.length === 0) return;
+    maybeMorningBriefing(tasks);
+    checkReminders(tasks);
+    const id = setInterval(() => checkReminders(tasks), 60_000);
+    return () => clearInterval(id);
+  }, [tasks]);
+
   if (loading || !user) {
     return <div className="flex h-screen items-center justify-center text-muted-foreground text-sm">Indlæser…</div>;
   }
@@ -58,6 +69,7 @@ export function AppShell({
         </div>
       </main>
       <TaskDetail task={active} onClose={() => setActive(null)} />
+      <Onboarding userId={user.id} />
     </div>
   );
 }
