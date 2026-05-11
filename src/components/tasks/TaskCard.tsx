@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, Calendar as CalIcon, Mic, ChevronDown } from "lucide-react";
+import { Check, Calendar as CalIcon, Mic, ChevronDown, Trash2 } from "lucide-react";
 import { format, isPast, isToday } from "date-fns";
 import { da } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,6 +18,12 @@ export function TaskCard({ task, onOpen }: { task: Task; onOpen?: (t: Task) => v
       status: done ? "todo" : "done",
       completed_at: done ? null : new Date().toISOString(),
     }).eq("id", task.id);
+  };
+
+  const remove = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm("Slet denne opgave?")) return;
+    await supabase.from("tasks").delete().eq("id", task.id);
   };
 
   const hasMore = !!(task.summary || task.transcript || task.description);
@@ -68,6 +74,13 @@ export function TaskCard({ task, onOpen }: { task: Task; onOpen?: (t: Task) => v
             )}>
               {PRIORITY_LABEL[task.priority]}
             </span>
+            <button
+              onClick={remove}
+              className="flex-none rounded-md p-1 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
+              aria-label="Slet opgave"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
           </div>
 
           {task.summary && (
