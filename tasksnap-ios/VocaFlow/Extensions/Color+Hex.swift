@@ -18,4 +18,5 @@ extension Color {
 
 extension Color {
     static let cream = Color(hex: "#F5F0E8")
+    static let dark  = Color(hex: "#1A1A1A")
 }

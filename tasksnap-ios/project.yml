@@ -24,7 +24,10 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: io.vocaflow.app
         INFOPLIST_FILE: VocaFlow/Info.plist
-        DEVELOPMENT_TEAM: "8D786HJQF9"   # fill in your Apple team ID
+        DEVELOPMENT_TEAM: "8D786HJQF9"
+        # Lets StopRecordingIntent.swift conditionally compile its full body
+        # only when building the main app (not the widget extension).
+        OTHER_SWIFT_FLAGS: "-DAPP_TARGET"
     entitlements:
       path: VocaFlow/VocaFlow.entitlements
       properties:
@@ -38,9 +41,11 @@ targets:
     platform: iOS
     deploymentTarget: "17.0"
     sources:
-      # Shared attributes model
+      # Files shared between the main app and the widget extension.
       - path: VocaFlow/LiveActivity/RecordingActivityAttributes.swift
-      # Widget entry point
+      - path: VocaFlow/Intents/StopRecordingIntent.swift
+      - path: VocaFlow/Extensions/Color+Hex.swift
+      # Widget-only sources.
       - path: VocaFlowActivity
     settings:
       base:

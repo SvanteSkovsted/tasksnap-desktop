@@ -10,6 +10,11 @@ final class LiveActivityManager {
     private var ticker: Task<Void, Never>?
     private var startDate = Date()
 
+    // Resolves the live activity even when this is a fresh process (activity == nil).
+    private var liveActivity: Activity<RecordingActivityAttributes>? {
+        activity ?? Activity<RecordingActivityAttributes>.activities.first
+    }
+
     // MARK: - Phase transitions
 
     func start() {
@@ -28,43 +33,42 @@ final class LiveActivityManager {
             return
         }
 
-        // Tick elapsed time once per second while recording.
         ticker = Task {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
                 let elapsed = Int(Date().timeIntervalSince(startDate))
                 let state = RecordingActivityAttributes.ContentState(phase: .recording, elapsedSeconds: elapsed)
-                await activity?.update(.init(state: state, staleDate: nil))
+                await liveActivity?.update(.init(state: state, staleDate: nil))
             }
         }
     }
 
-    /// Call immediately after stopping the microphone — shows a spinner.
+    /// Stop the ticker and show the analyzing spinner.
     func setAnalyzing() {
         ticker?.cancel()
         ticker = nil
         let state = RecordingActivityAttributes.ContentState(phase: .analyzing, elapsedSeconds: 0)
-        Task { await activity?.update(.init(state: state, staleDate: nil)) }
+        Task { await liveActivity?.update(.init(state: state, staleDate: nil)) }
     }
 
-    /// Call when the upload succeeds — shows checkmark, then auto-dismisses after 3 s.
+    /// Show green checkmark, then auto-dismiss after 2 s.
     func complete() {
         let state = RecordingActivityAttributes.ContentState(phase: .done, elapsedSeconds: 0)
         Task {
-            await activity?.update(.init(state: state, staleDate: nil))
-            try? await Task.sleep(nanoseconds: 3_000_000_000)
-            await activity?.end(.init(state: state, staleDate: nil), dismissalPolicy: .immediate)
+            await liveActivity?.update(.init(state: state, staleDate: nil))
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            await liveActivity?.end(.init(state: state, staleDate: nil), dismissalPolicy: .immediate)
             activity = nil
         }
     }
 
-    /// Convenience for the foreground recorder path (no distinct analyzing step needed).
+    /// Used by the foreground recorder (no analyzing phase needed).
     func stop() {
         ticker?.cancel()
         ticker = nil
         Task {
             let state = RecordingActivityAttributes.ContentState(phase: .done, elapsedSeconds: 0)
-            await activity?.end(.init(state: state, staleDate: nil), dismissalPolicy: .after(.now + 3))
+            await liveActivity?.end(.init(state: state, staleDate: nil), dismissalPolicy: .after(.now + 2))
             activity = nil
         }
     }
