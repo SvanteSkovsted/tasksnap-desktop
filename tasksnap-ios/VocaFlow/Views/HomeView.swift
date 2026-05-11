@@ -37,11 +37,23 @@ struct HomeView: View {
                 Spacer()
 
                 if phase == .idle && !bgService.isRecording {
-                    Text("Hold to record · release to send")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .padding(.bottom, 40)
-                        .transition(.opacity)
+                    VStack(spacing: 12) {
+                        Text("Hold to record · release to send")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
+                        #if DEBUG
+                        // Tap to verify Live Activity works independently of the Action Button.
+                        // Runs recording → analyzing → done in 5 s.
+                        Button("Test Live Activity") {
+                            testLiveActivity()
+                        }
+                        .font(.caption2)
+                        .foregroundColor(.secondary.opacity(0.6))
+                        #endif
+                    }
+                    .padding(.bottom, 40)
+                    .transition(.opacity)
                 }
             }
         }
@@ -219,4 +231,19 @@ struct HomeView: View {
             }
         }
     }
+
+    #if DEBUG
+    private func testLiveActivity() {
+        print("[HomeView] testLiveActivity() — starting smoke test")
+        LiveActivityManager.shared.start()
+        Task {
+            try? await Task.sleep(nanoseconds: 4_000_000_000)
+            print("[HomeView] testLiveActivity() — switching to analyzing")
+            LiveActivityManager.shared.setAnalyzing()
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            print("[HomeView] testLiveActivity() — completing")
+            LiveActivityManager.shared.complete()
+        }
+    }
+    #endif
 }

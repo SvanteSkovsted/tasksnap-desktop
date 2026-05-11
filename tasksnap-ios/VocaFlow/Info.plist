@@ -24,8 +24,10 @@
     <key>NSMicrophoneUsageDescription</key>
     <string>VocaFlow needs microphone access to capture voice notes and turn them into tasks.</string>
 
-    <!-- Live Activities in Dynamic Island -->
+    <!-- Live Activities / Dynamic Island -->
     <key>NSSupportsLiveActivities</key>
+    <true/>
+    <key>NSSupportsLiveActivitiesFrequentUpdates</key>
     <true/>
 
     <!-- Background audio so recording continues when app moves to background -->

@@ -10,65 +10,105 @@ final class LiveActivityManager {
     private var ticker: Task<Void, Never>?
     private var startDate = Date()
 
-    // Resolves the live activity even when this is a fresh process (activity == nil).
+    // Falls back to the system registry when this is a fresh process.
     private var liveActivity: Activity<RecordingActivityAttributes>? {
-        activity ?? Activity<RecordingActivityAttributes>.activities.first
+        if let a = activity { return a }
+        let found = Activity<RecordingActivityAttributes>.activities.first
+        print("[LiveActivity] liveActivity — in-memory nil, registry: \(found?.id ?? "none")")
+        return found
     }
 
-    // MARK: - Phase transitions
+    // MARK: - Start
 
     func start() {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
-        startDate = Date()
+        print("[LiveActivity] ── start() ──────────────────────────")
 
+        let info = ActivityAuthorizationInfo()
+        print("[LiveActivity] areActivitiesEnabled      : \(info.areActivitiesEnabled)")
+        print("[LiveActivity] frequentPushesEnabled     : \(info.frequentPushesEnabled)")
+
+        guard info.areActivitiesEnabled else {
+            print("[LiveActivity] ❌ Activities not enabled.")
+            print("[LiveActivity]    → Check: Settings › VocaFlow › Live Activities")
+            print("[LiveActivity]    → Check: Settings › Face ID & Passcode › Live Activities")
+            return
+        }
+
+        // End any stale activity from a previous session.
+        if let stale = Activity<RecordingActivityAttributes>.activities.first {
+            print("[LiveActivity] Found stale activity \(stale.id) — ending it first")
+            Task { await stale.end(nil, dismissalPolicy: .immediate) }
+        }
+
+        startDate = Date()
         let initial = RecordingActivityAttributes.ContentState(phase: .recording, elapsedSeconds: 0)
+        print("[LiveActivity] Requesting activity with state: \(initial)")
+
         do {
-            activity = try Activity.request(
+            let a = try Activity.request(
                 attributes: RecordingActivityAttributes(),
                 content: .init(state: initial, staleDate: nil),
                 pushType: nil
             )
+            activity = a
+            print("[LiveActivity] ✅ Activity started — id: \(a.id)")
+        } catch let error as ActivityAuthorizationError {
+            print("[LiveActivity] ❌ ActivityAuthorizationError: \(error)")
+            return
         } catch {
-            print("LiveActivity start failed:", error)
+            print("[LiveActivity] ❌ Activity.request threw: \(error)")
+            print("[LiveActivity]    localizedDescription: \(error.localizedDescription)")
             return
         }
 
         ticker = Task {
+            print("[LiveActivity] Ticker started")
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
                 let elapsed = Int(Date().timeIntervalSince(startDate))
-                let state = RecordingActivityAttributes.ContentState(phase: .recording, elapsedSeconds: elapsed)
+                let state = RecordingActivityAttributes.ContentState(phase: .recording,
+                                                                     elapsedSeconds: elapsed)
+                print("[LiveActivity] Tick \(elapsed)s → updating \(liveActivity?.id ?? "nil")")
                 await liveActivity?.update(.init(state: state, staleDate: nil))
             }
+            print("[LiveActivity] Ticker cancelled")
         }
     }
 
-    /// Stop the ticker and show the analyzing spinner.
+    // MARK: - Phase transitions
+
     func setAnalyzing() {
+        print("[LiveActivity] setAnalyzing() — activity: \(liveActivity?.id ?? "nil")")
         ticker?.cancel()
         ticker = nil
         let state = RecordingActivityAttributes.ContentState(phase: .analyzing, elapsedSeconds: 0)
-        Task { await liveActivity?.update(.init(state: state, staleDate: nil)) }
+        Task {
+            await liveActivity?.update(.init(state: state, staleDate: nil))
+            print("[LiveActivity] → analyzing state pushed")
+        }
     }
 
-    /// Show green checkmark, then auto-dismiss after 2 s.
     func complete() {
+        print("[LiveActivity] complete() — activity: \(liveActivity?.id ?? "nil")")
         let state = RecordingActivityAttributes.ContentState(phase: .done, elapsedSeconds: 0)
         Task {
             await liveActivity?.update(.init(state: state, staleDate: nil))
+            print("[LiveActivity] → done state pushed, waiting 2 s…")
             try? await Task.sleep(nanoseconds: 2_000_000_000)
             await liveActivity?.end(.init(state: state, staleDate: nil), dismissalPolicy: .immediate)
+            print("[LiveActivity] → activity ended")
             activity = nil
         }
     }
 
-    /// Used by the foreground recorder (no analyzing phase needed).
     func stop() {
+        print("[LiveActivity] stop() — activity: \(liveActivity?.id ?? "nil")")
         ticker?.cancel()
         ticker = nil
         Task {
             let state = RecordingActivityAttributes.ContentState(phase: .done, elapsedSeconds: 0)
             await liveActivity?.end(.init(state: state, staleDate: nil), dismissalPolicy: .after(.now + 2))
+            print("[LiveActivity] → activity ended via stop()")
             activity = nil
         }
     }
