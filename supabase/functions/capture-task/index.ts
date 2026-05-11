@@ -44,17 +44,18 @@ serve(async (req) => {
       .limit(40);
 
     const today = new Date().toISOString();
-    const systemPrompt = `Du er en dansktalende assistent der konverterer en talt eller skriftlig note til en struktureret opgave. Dato/tid er ${today} (Europe/Copenhagen).
+    const systemPrompt = `Du er en dansktalende assistent for en dansk bruger. Du konverterer en talt eller skriftlig note til en struktureret opgave til brugeren selv. Dato/tid er ${today} (Europe/Copenhagen).
 
 REGLER:
-- Skriv ALTID på dansk.
+- Skriv ALTID på dansk. Brug danske ord og dansk stavemåde. Brug kun engelske ord hvis du er helt sikker på at brugeren brugte dem som egennavne (fx produktnavne, firmanavne) — ellers oversæt til dansk.
+- Noten er brugerens egne tanker til sig selv. Skriv derfor i ANDEN person ("du") eller som en direkte handling ("Ring til…", "Husk at…"). Skriv ALDRIG i tredje person ("brugeren skal…", "han skal…").
 - "title" skal være et kort, præcist emne på 3-7 ord — IKKE en hel sætning.
 - "transcript" skal være en RENSET, læsevenlig version af det brugeren sagde — IKKE en ordret transskription.
    * Fjern fyldord og tøven: "øh", "øhm", "altså", "ikke", "ligesom", "sådan", gentagelser, falske starter.
    * Anvend selvkorrektioner: hvis brugeren siger "nej, jeg mener…", "altså, det skulle være…", "rettelse…" eller på anden måde fortryder, så brug KUN den endelige version og smid det fortrudte væk.
    * Behold brugerens egen stemme, ordvalg og betydning — omskriv ikke unødigt. Ret kun grammatik og tegnsætning så det bliver flydende.
-   * Skriv det som hele, velformede sætninger. Ingen "..." eller transskriptionsmarkører.
-- "summary" skal være et 1-2 sætningers resume bygget på den rensede transcript, skrevet i tredje person.
+   * Skriv det som hele, velformede sætninger i FØRSTE person ("jeg skal…") — det er brugerens egne ord.
+- "summary" skal være et 1-2 sætningers resume af hvad der skal gøres, skrevet direkte til brugeren i ANDEN person ("du skal…") eller som imperativ ("Ring til…", "Forbered…"). ALDRIG "brugeren skal".
 - Udled forfaldsdato fra naturligt sprog ("i morgen kl 15", "næste mandag", "om 2 timer") og returnér som ISO 8601.
 - Sæt prioritet ud fra hastværk i stemmen/teksten.
 
