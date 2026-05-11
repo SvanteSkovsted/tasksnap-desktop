@@ -75,14 +75,26 @@ unsafe fn set_collection_behavior(win: &tauri::WebviewWindow) {
 
 // ── Window helpers ────────────────────────────────────────────────────────────
 
-/// Show the capture window at the screen's bottom-right corner in hold mode
-/// (300 × 110 logical pixels), then emit "shortcut-pressed" so the frontend
-/// starts recording immediately.
+/// Force the app to the front so our floating window beats Safari / Chrome.
+/// macOS won't raise another app's window unless it is the active application,
+/// so we activate first, then show.
+#[cfg(target_os = "macos")]
+unsafe fn activate_app() {
+    use objc2::msg_send;
+    use objc2::runtime::{AnyClass, AnyObject};
+    if let Some(cls) = AnyClass::get(c"NSApplication") {
+        let app: *mut AnyObject = msg_send![cls, sharedApplication];
+        if !app.is_null() {
+            let _: () = msg_send![app, activateIgnoringOtherApps: true];
+        }
+    }
+}
+
+/// Show the capture window at the screen's bottom-right corner in hold mode.
 fn show_hold_window(app: &tauri::AppHandle) {
     let Some(win) = app.get_webview_window("main") else { return };
     let _ = win.set_size(LogicalSize::new(300u32, 110u32));
 
-    // Position bottom-right of the current (or primary) monitor.
     let monitor = win
         .current_monitor()
         .ok()
@@ -92,18 +104,20 @@ fn show_hold_window(app: &tauri::AppHandle) {
     if let Some(monitor) = monitor {
         let scale = monitor.scale_factor();
         let mon = monitor.size().to_logical::<i32>(scale);
-        let x = mon.width  - 300 - 20;   // 20 px right margin
-        let y = mon.height - 110 - 80;   // 80 px above dock/taskbar
+        let x = mon.width  - 300 - 20;
+        let y = mon.height - 110 - 80;
         let _ = win.set_position(LogicalPosition::new(x, y));
     } else {
-        let _ = win.center(); // fallback
+        let _ = win.center();
     }
 
+    #[cfg(target_os = "macos")]
+    unsafe { activate_app(); }
+
     let _ = win.show();
-    // Re-assert NSFloatingWindowLevel (3) after show — set_size can silently
-    // drop the always-on-top flag on some macOS versions.
     let _ = win.set_always_on_top(true);
     let _ = win.set_focus();
+    // "shortcut-pressed" tells the frontend to set visible=true and start recording.
     let _ = win.emit("shortcut-pressed", ());
 }
 
@@ -111,12 +125,18 @@ fn show_hold_window(app: &tauri::AppHandle) {
 fn show_click_window(app: &tauri::AppHandle) {
     let Some(win) = app.get_webview_window("main") else { return };
     let _ = win.set_size(LogicalSize::new(320u32, 260u32));
+
+    #[cfg(target_os = "macos")]
+    unsafe { activate_app(); }
+
     let _ = win.show();
     let _ = win.center();
-    // Re-assert NSFloatingWindowLevel (3) — must come after show() so the
-    // window handle is live on macOS.
     let _ = win.set_always_on_top(true);
     let _ = win.set_focus();
+    // Emit a reliable "window is now shown" signal so the frontend can
+    // set visible=true without depending on tauri://focus, which macOS
+    // suppresses when another app (Safari, etc.) owns focus.
+    let _ = win.emit("window-shown", ());
 }
 
 // ── App entry point ───────────────────────────────────────────────────────────

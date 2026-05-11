@@ -189,20 +189,15 @@ export default function App() {
   useEffect(() => {
     const cleanup: Array<() => void> = [];
 
-    // Click mode: re-run entrance animation on each Ctrl+Space show.
-    // Hold mode: shortcut-pressed handles the show instead.
-    listen("tauri://focus", () => {
-      if (windowShownRef.current) return;
-      if (recordingModeRef.current === "hold") {
-        // window was shown by Rust already, just arm visible
-        windowShownRef.current = true;
-        setVisible(true);
-        return;
-      }
+    // Click mode: Rust emits "window-shown" right after win.show() so we
+    // set visible=true reliably even when Safari owns focus (tauri://focus
+    // is suppressed by macOS when another app is the active application).
+    listen("window-shown", () => {
+      if (recordingModeRef.current === "hold") return; // hold handles its own show
       windowShownRef.current = true;
       setAppState("idle");
       setErrorMsg("");
-      setVisible(false);
+      setVisible(false); // reset so the entrance spring replays
       requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
     }).then((fn) => cleanup.push(fn));
 
