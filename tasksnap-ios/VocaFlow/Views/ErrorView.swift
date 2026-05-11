@@ -22,7 +22,7 @@ struct ErrorView: View {
 
             Text(message)
                 .font(.callout)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color.dark.opacity(0.6))
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
                 .opacity(appear ? 1 : 0)

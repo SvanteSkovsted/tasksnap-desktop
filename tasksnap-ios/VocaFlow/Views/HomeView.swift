@@ -40,7 +40,7 @@ struct HomeView: View {
                     VStack(spacing: 12) {
                         Text("Hold to record · release to send")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(Color.dark.opacity(0.5))
 
                         #if DEBUG
                         // Tap to verify Live Activity works independently of the Action Button.
@@ -85,7 +85,7 @@ struct HomeView: View {
                 authState.logOut()
             } label: {
                 Image(systemName: "rectangle.portrait.and.arrow.right")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color.dark.opacity(0.5))
             }
         }
         .padding(.horizontal, 24)
@@ -106,7 +106,7 @@ struct HomeView: View {
                     .font(.system(size: 17, weight: .medium, design: .rounded))
                 Text("Press Action Button again or tap Stop to finish")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color.dark.opacity(0.5))
                     .multilineTextAlignment(.center)
             }
 

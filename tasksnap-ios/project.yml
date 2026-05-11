@@ -12,6 +12,13 @@ settings:
     MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "1"
 
+# Local Swift package — both targets import this so RecordingActivityAttributes
+# has the same fully-qualified module name (VocaFlowShared.RecordingActivityAttributes)
+# in both, which is what ActivityKit uses to match activity requests to extensions.
+packages:
+  VocaFlowShared:
+    path: VocaFlowShared
+
 targets:
 
   VocaFlow:
@@ -25,8 +32,6 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: io.vocaflow.app
         INFOPLIST_FILE: VocaFlow/Info.plist
         DEVELOPMENT_TEAM: "8D786HJQF9"
-        # Lets StopRecordingIntent.swift conditionally compile its full body
-        # only when building the main app (not the widget extension).
         OTHER_SWIFT_FLAGS: "-DAPP_TARGET"
     entitlements:
       path: VocaFlow/VocaFlow.entitlements
@@ -35,15 +40,17 @@ targets:
           - group.io.vocaflow.app
     dependencies:
       - target: VocaFlowActivity
+      - package: VocaFlowShared
+        product: VocaFlowShared
 
   VocaFlowActivity:
     type: app-extension
     platform: iOS
     deploymentTarget: "17.0"
     sources:
-      # Files shared between the main app and the widget extension.
-      - path: VocaFlow/LiveActivity/RecordingActivityAttributes.swift
+      # Shared intent stub (Button(intent:) needs the type at compile time).
       - path: VocaFlow/Intents/StopRecordingIntent.swift
+      # Shared colour tokens.
       - path: VocaFlow/Extensions/Color+Hex.swift
       # Widget-only sources.
       - path: VocaFlowActivity
@@ -54,3 +61,6 @@ targets:
         DEVELOPMENT_TEAM: "8D786HJQF9"
         SKIP_INSTALL: YES
         LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"
+    dependencies:
+      - package: VocaFlowShared
+        product: VocaFlowShared

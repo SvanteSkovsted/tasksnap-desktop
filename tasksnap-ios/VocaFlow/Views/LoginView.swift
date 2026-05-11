@@ -37,7 +37,7 @@ struct LoginView: View {
 
                         Text("Voice to task, instantly")
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(Color.dark.opacity(0.5))
                     }
                     .padding(.top, 72)
                     .padding(.bottom, 52)
@@ -57,7 +57,7 @@ struct LoginView: View {
                         .cornerRadius(12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.secondary.opacity(0.15), lineWidth: 1)
+                                .stroke(Color.dark.opacity(0.12), lineWidth: 1)
                         )
 
                         if let error = errorMsg {

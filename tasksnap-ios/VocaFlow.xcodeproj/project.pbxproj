@@ -15,6 +15,7 @@
 		21A5919D139C0E8DF3609D65 /* RecordingLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7F5A7D203D50A24E312032 /* RecordingLiveActivity.swift */; };
 		2342A57FB47A5B3537655767 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8D8E4755A76DD9E33B098 /* LoginView.swift */; };
 		26404F270EF13DDA56E8344B /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8E3D20E012FC9051BB82E /* Color+Hex.swift */; };
+		2A6CB9476FE5FCE8B5934B90 /* VocaFlowShared in Frameworks */ = {isa = PBXBuildFile; productRef = 2C827A2B452949D9FC9CDEC5 /* VocaFlowShared */; };
 		4CBB84A622A0CD9AFCE66EF8 /* MicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD172A7C417C06D4DFCF6241 /* MicButton.swift */; };
 		556F2A53F21A93AD8F48F827 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EC3A121FD1E1B628F79CF2 /* Assets.xcassets */; };
 		5A3CC4BA8002710D54BA71FA /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99909D4BD83FA4D7BEE9EED1 /* AudioRecorder.swift */; };
@@ -23,12 +24,11 @@
 		91AC6A4F288091D96F093BA8 /* StopRecordingIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D96D0636156A729DF886ED /* StopRecordingIntent.swift */; };
 		935AAFFBE557471297136083 /* VocaFlowActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9652BD52633DEFE612631742 /* VocaFlowIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541D2E8A01C360D302C7B09B /* VocaFlowIntent.swift */; };
-		9E7D1B10BA1071C4F4510866 /* RecordingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */; };
 		A2424927A4C0C8F5EA21CF4E /* AnalyzingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF9106B5F68A3D5AC3A009D /* AnalyzingView.swift */; };
 		B01DC5E883DA210D75A0977E /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3FC361F10D5D785033EBC8 /* AuthState.swift */; };
+		B47774FA7697EFABD8B51AAA /* VocaFlowShared in Frameworks */ = {isa = PBXBuildFile; productRef = EABD9FCE52694967B53594A4 /* VocaFlowShared */; };
 		C35383DABCA3CD34DD6CE6B5 /* RecordingTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313B74193255B208B4A27C6 /* RecordingTrigger.swift */; };
 		D1A63F83E3A317BEC913D138 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606860E84277F10E6187B9F9 /* WaveformView.swift */; };
-		D4A8E1DB1F6CF7D7A8B09A93 /* RecordingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */; };
 		D95E2B9914A1AB0E3E78F43D /* VocaFlowActivityBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7378685291CEC6B14F846CA /* VocaFlowActivityBundle.swift */; };
 		E19696A4485B166EF261F7E5 /* BackgroundRecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0443226BDC8E074945E267D /* BackgroundRecordingService.swift */; };
 		E3B2C8FF863F43F5D10E0BFE /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6615FC9EB195C1465642F /* SuccessView.swift */; };
@@ -71,6 +71,7 @@
 		541D2E8A01C360D302C7B09B /* VocaFlowIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaFlowIntent.swift; sourceTree = "<group>"; };
 		606860E84277F10E6187B9F9 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
 		61D96D0636156A729DF886ED /* StopRecordingIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopRecordingIntent.swift; sourceTree = "<group>"; };
+		6D3E776BD647096E9810C63F /* VocaFlowShared */ = {isa = PBXFileReference; lastKnownFileType = folder; name = VocaFlowShared; path = VocaFlowShared; sourceTree = SOURCE_ROOT; };
 		756AB295FD24A64EC5723EEA /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		76EC3A121FD1E1B628F79CF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7BF9106B5F68A3D5AC3A009D /* AnalyzingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzingView.swift; sourceTree = "<group>"; };
@@ -84,12 +85,38 @@
 		C1B41C0C68CD9BB1CD82E530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C2B5922BA6646B01B1B9CC1D /* SupabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseService.swift; sourceTree = "<group>"; };
 		CD172A7C417C06D4DFCF6241 /* MicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicButton.swift; sourceTree = "<group>"; };
-		CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingActivityAttributes.swift; sourceTree = "<group>"; };
 		D7378685291CEC6B14F846CA /* VocaFlowActivityBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaFlowActivityBundle.swift; sourceTree = "<group>"; };
 		FB3FC361F10D5D785033EBC8 /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		4B7B61822006690ED5119B58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B47774FA7697EFABD8B51AAA /* VocaFlowShared in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC7E48BA93A0033689E2546B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A6CB9476FE5FCE8B5934B90 /* VocaFlowShared in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		008FE4DC31AFBA5151D71EC7 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				6D3E776BD647096E9810C63F /* VocaFlowShared */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		0CA02A59E31F81EEA07057CD /* VocaFlowActivity */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +130,7 @@
 		5B293A071A1B9E35F55720F7 = {
 			isa = PBXGroup;
 			children = (
+				008FE4DC31AFBA5151D71EC7 /* Packages */,
 				CE0057CC69C9B10077270E12 /* VocaFlow */,
 				0CA02A59E31F81EEA07057CD /* VocaFlowActivity */,
 				AE402E06E6F5C2B2E24A0868 /* Products */,
@@ -173,7 +201,6 @@
 			isa = PBXGroup;
 			children = (
 				3F23FB6842082DC7429E830D /* LiveActivityManager.swift */,
-				CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */,
 			);
 			path = LiveActivity;
 			sourceTree = "<group>";
@@ -203,6 +230,7 @@
 			buildConfigurationList = 3FA61F51B28BDC53486E8FB1 /* Build configuration list for PBXNativeTarget "VocaFlowActivity" */;
 			buildPhases = (
 				F1E651518E3664F434684248 /* Sources */,
+				CC7E48BA93A0033689E2546B /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -210,6 +238,7 @@
 			);
 			name = VocaFlowActivity;
 			packageProductDependencies = (
+				2C827A2B452949D9FC9CDEC5 /* VocaFlowShared */,
 			);
 			productName = VocaFlowActivity;
 			productReference = 92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */;
@@ -221,6 +250,7 @@
 			buildPhases = (
 				EB2DD6B73094603D4E8848FC /* Sources */,
 				7A21ADB5ECA47F818D269B8D /* Resources */,
+				4B7B61822006690ED5119B58 /* Frameworks */,
 				160287204A07A13DAF435728 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -230,6 +260,7 @@
 			);
 			name = VocaFlow;
 			packageProductDependencies = (
+				EABD9FCE52694967B53594A4 /* VocaFlowShared */,
 			);
 			productName = VocaFlow;
 			productReference = 8ECF818880750DC461D3407C /* VocaFlow.app */;
@@ -261,6 +292,9 @@
 			);
 			mainGroup = 5B293A071A1B9E35F55720F7;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7F7400FB70712D029C62D3A4 /* XCLocalSwiftPackageReference "VocaFlowShared" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AE402E06E6F5C2B2E24A0868 /* Products */;
 			projectDirPath = "";
@@ -299,7 +333,6 @@
 				1947775B47F74B5A6AFA7342 /* LiveActivityManager.swift in Sources */,
 				2342A57FB47A5B3537655767 /* LoginView.swift in Sources */,
 				4CBB84A622A0CD9AFCE66EF8 /* MicButton.swift in Sources */,
-				D4A8E1DB1F6CF7D7A8B09A93 /* RecordingActivityAttributes.swift in Sources */,
 				C35383DABCA3CD34DD6CE6B5 /* RecordingTrigger.swift in Sources */,
 				065F49A0614F529238F8951E /* StopRecordingIntent.swift in Sources */,
 				E3B2C8FF863F43F5D10E0BFE /* SuccessView.swift in Sources */,
@@ -315,7 +348,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0991FE6ECBFB0C5E2728AE8A /* Color+Hex.swift in Sources */,
-				9E7D1B10BA1071C4F4510866 /* RecordingActivityAttributes.swift in Sources */,
 				21A5919D139C0E8DF3609D65 /* RecordingLiveActivity.swift in Sources */,
 				91AC6A4F288091D96F093BA8 /* StopRecordingIntent.swift in Sources */,
 				D95E2B9914A1AB0E3E78F43D /* VocaFlowActivityBundle.swift in Sources */,
@@ -555,6 +587,24 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		7F7400FB70712D029C62D3A4 /* XCLocalSwiftPackageReference "VocaFlowShared" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = VocaFlowShared;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2C827A2B452949D9FC9CDEC5 /* VocaFlowShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VocaFlowShared;
+		};
+		EABD9FCE52694967B53594A4 /* VocaFlowShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VocaFlowShared;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0D0A3C2060598B526C584784 /* Project object */;
 }

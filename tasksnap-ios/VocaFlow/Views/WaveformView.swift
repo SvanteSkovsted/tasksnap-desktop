@@ -42,7 +42,7 @@ struct IdleWaveformView: View {
         HStack(alignment: .center, spacing: 4) {
             ForEach(0..<barCount, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 2)
-                    .fill(Color.secondary.opacity(0.25))
+                    .fill(Color.dark.opacity(0.18))
                     .frame(width: 4, height: idleHeight(for: i))
                     .animation(.easeInOut(duration: 1.6).delay(Double(i) * 0.04).repeatForever(autoreverses: true), value: phase)
             }
