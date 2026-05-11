@@ -49,8 +49,12 @@ serve(async (req) => {
 REGLER:
 - Skriv ALTID på dansk.
 - "title" skal være et kort, præcist emne på 3-7 ord — IKKE en hel sætning.
-- "summary" skal være et 1-2 sætningers resume af hvad brugeren sagde, skrevet i tredje person.
-- "transcript" skal være den ordrette transskription af brugerens tale (eller råteksten hvis input er tekst).
+- "transcript" skal være en RENSET, læsevenlig version af det brugeren sagde — IKKE en ordret transskription.
+   * Fjern fyldord og tøven: "øh", "øhm", "altså", "ikke", "ligesom", "sådan", gentagelser, falske starter.
+   * Anvend selvkorrektioner: hvis brugeren siger "nej, jeg mener…", "altså, det skulle være…", "rettelse…" eller på anden måde fortryder, så brug KUN den endelige version og smid det fortrudte væk.
+   * Behold brugerens egen stemme, ordvalg og betydning — omskriv ikke unødigt. Ret kun grammatik og tegnsætning så det bliver flydende.
+   * Skriv det som hele, velformede sætninger. Ingen "..." eller transskriptionsmarkører.
+- "summary" skal være et 1-2 sætningers resume bygget på den rensede transcript, skrevet i tredje person.
 - Udled forfaldsdato fra naturligt sprog ("i morgen kl 15", "næste mandag", "om 2 timer") og returnér som ISO 8601.
 - Sæt prioritet ud fra hastværk i stemmen/teksten.
 
@@ -97,12 +101,12 @@ Kald ALTID upsert_task værktøjet.`;
                 existing_task_id: { type: "string", description: "Kun ved action=update" },
                 title: { type: "string", description: "Kort emne 3-7 ord på dansk" },
                 summary: { type: "string", description: "1-2 sætningers resume på dansk" },
-                transcript: { type: "string", description: "Ordret transskription / råtekst" },
+                transcript: { type: "string", description: "Renset, læsevenlig version af noten — uden fyldord, med selvkorrektioner anvendt" },
                 priority: { type: "string", enum: ["urgent", "high", "medium", "low"] },
                 category: { type: "string", description: "fx Arbejde, Privat, Ærinder, Sundhed" },
                 due_date: { type: "string", description: "ISO 8601 datotid eller tom streng" },
               },
-              required: ["action", "title", "priority", "category"],
+              required: ["action", "title", "summary", "transcript", "priority", "category"],
               additionalProperties: false,
             },
           },
