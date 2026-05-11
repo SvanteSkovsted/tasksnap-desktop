@@ -74,11 +74,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "TaskSnap — Voice-captured tasks, beautifully organized" },
       { name: "description", content: "TaskSnap turns your voice into structured tasks. A premium task dashboard inspired by Linear, Vercel and Raycast." },
-      { property: "og:title", content: "TaskSnap" },
-      { property: "og:description", content: "Voice-captured tasks, beautifully organized." },
+      { property: "og:title", content: "TaskSnap — Voice-captured tasks, beautifully organized" },
+      { property: "og:description", content: "TaskSnap turns your voice into structured tasks. A premium task dashboard inspired by Linear, Vercel and Raycast." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "TaskSnap — Voice-captured tasks, beautifully organized" },
+      { name: "twitter:description", content: "TaskSnap turns your voice into structured tasks. A premium task dashboard inspired by Linear, Vercel and Raycast." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4c9025b2-0bf4-4e6b-972d-aebd68559f2a/id-preview-e00b69ae--cb8d2bcd-bb17-4b35-874f-609062c493d6.lovable.app-1778498876244.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4c9025b2-0bf4-4e6b-972d-aebd68559f2a/id-preview-e00b69ae--cb8d2bcd-bb17-4b35-874f-609062c493d6.lovable.app-1778498876244.png" },
     ],
     links: [
       {
