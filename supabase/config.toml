@@ -1,1 +1,4 @@
 project_id = "hxrzqvagvpgyqejvjiil"
+
+[functions.capture-task]
+verify_jwt = false
