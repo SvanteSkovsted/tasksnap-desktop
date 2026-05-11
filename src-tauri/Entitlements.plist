@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+        Direct / notarized distribution (not App Store).
+        For App Store distribution flip this to <true/> and remove the
+        cs.* Hardened Runtime exceptions below.
+    -->
+    <key>com.apple.security.app-sandbox</key>
+    <false/>
+
+    <!--
+        Microphone access.
+        Required under Hardened Runtime even without the full sandbox so
+        that macOS TCC correctly maps the privacy prompt to this process.
+    -->
+    <key>com.apple.security.device.audio-input</key>
+    <true/>
+
+    <!--
+        Outbound network access (POST to Supabase Edge Function).
+        Without the sandbox this is allowed by default, but declaring it
+        makes the intent explicit and future-proofs a sandbox switch.
+    -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+
+    <!--
+        WKWebView / WebKit JIT compilation.
+        Both are required whenever Hardened Runtime is enabled (the default
+        in Tauri v2) so that the embedded WebView can execute JavaScript.
+    -->
+    <key>com.apple.security.cs.allow-jit</key>
+    <true/>
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <true/>
+
+    <!--
+        Allow loading Tauri's plugin dylibs and WKWebView helpers that are
+        not signed with the same identity as the main executable.
+    -->
+    <key>com.apple.security.cs.disable-library-validation</key>
+    <true/>
+</dict>
+</plist>

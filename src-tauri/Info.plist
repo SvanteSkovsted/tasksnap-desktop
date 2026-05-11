@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+        Shown in System Settings → Privacy & Security → Microphone
+        when the user is prompted for the first time.
+    -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>TaskSnap uses your microphone to record voice tasks.</string>
+
+    <!--
+        Agent app: hides from Dock and Cmd+Tab switcher.
+        The app lives only as a menu-bar tray icon.
+        (Tauri also calls set_activation_policy(Accessory) at runtime, but
+        setting this here prevents a brief Dock-icon flash on launch.)
+    -->
+    <key>LSUIElement</key>
+    <true/>
+</dict>
+</plist>

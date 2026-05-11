@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ── Pulsing rings (recording state) ─────────────────────────────────── */
+
+@keyframes ring-out {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(2.7); opacity: 0; }
+}
+
+.ring {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1.5px solid #C9A882;
+  animation: ring-out 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  pointer-events: none;
+}
+.ring-1 { animation-delay: 0s;    }
+.ring-2 { animation-delay: 0.65s; }
+.ring-3 { animation-delay: 1.3s;  }
+
+/* ── Mic button active-press feedback ─────────────────────────────────── */
+
+.mic-btn:active:not(:disabled) {
+  transform: scale(0.94) !important;
+}
