@@ -690,9 +690,12 @@ export type Database = {
           due_date: string | null
           id: string
           priority: Database["public"]["Enums"]["task_priority"]
+          reminder_minutes: number | null
           source: string | null
           status: Database["public"]["Enums"]["task_status"]
+          summary: string | null
           title: string
+          transcript: string | null
           updated_at: string
           user_id: string
         }
@@ -704,9 +707,12 @@ export type Database = {
           due_date?: string | null
           id?: string
           priority?: Database["public"]["Enums"]["task_priority"]
+          reminder_minutes?: number | null
           source?: string | null
           status?: Database["public"]["Enums"]["task_status"]
+          summary?: string | null
           title: string
+          transcript?: string | null
           updated_at?: string
           user_id: string
         }
@@ -718,9 +724,12 @@ export type Database = {
           due_date?: string | null
           id?: string
           priority?: Database["public"]["Enums"]["task_priority"]
+          reminder_minutes?: number | null
           source?: string | null
           status?: Database["public"]["Enums"]["task_status"]
+          summary?: string | null
           title?: string
+          transcript?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -743,6 +752,33 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          created_at: string
+          id: string
+          onboarding_completed: boolean
+          theme: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          onboarding_completed?: boolean
+          theme?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          onboarding_completed?: boolean
+          theme?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
