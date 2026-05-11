@@ -30,16 +30,43 @@ serve(async (req) => {
       });
     }
 
-    const today = new Date().toISOString();
-    const systemPrompt = `You extract structured task data from a user's spoken or written note. Today is ${today}. Infer due dates from natural phrases ("tomorrow 3pm", "next Monday", "in 2 hours") and return them as ISO 8601. Pick a single concise title (<100 chars). Always call the create_task tool.`;
+    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-    // Build the user message: Gemini accepts inline audio via input_audio
+    // Hent åbne, nylige opgaver så modellen kan vurdere om den skal opdatere en eksisterende
+    const since = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: existing } = await supabase
+      .from("tasks")
+      .select("id, title, summary, category, priority, due_date")
+      .eq("user_id", user_id)
+      .neq("status", "done")
+      .gte("created_at", since)
+      .order("created_at", { ascending: false })
+      .limit(40);
+
+    const today = new Date().toISOString();
+    const systemPrompt = `Du er en dansktalende assistent der konverterer en talt eller skriftlig note til en struktureret opgave. Dato/tid er ${today} (Europe/Copenhagen).
+
+REGLER:
+- Skriv ALTID på dansk.
+- "title" skal være et kort, præcist emne på 3-7 ord — IKKE en hel sætning.
+- "summary" skal være et 1-2 sætningers resume af hvad brugeren sagde, skrevet i tredje person.
+- "transcript" skal være den ordrette transskription af brugerens tale (eller råteksten hvis input er tekst).
+- Udled forfaldsdato fra naturligt sprog ("i morgen kl 15", "næste mandag", "om 2 timer") og returnér som ISO 8601.
+- Sæt prioritet ud fra hastværk i stemmen/teksten.
+
+DUPLIKATER OG OPDATERING:
+Hvis noten klart vedrører en EKSISTERENDE opgave på listen nedenfor (samme emne, samme person/projekt, eller en tilføjelse/ændring til den), så vælg action="update" og angiv "existing_task_id" + de felter der skal opdateres. Vær konservativ — kun hvis det er åbenlyst samme opgave.
+Ellers vælg action="create".
+
+EKSISTERENDE ÅBNE OPGAVER:
+${JSON.stringify(existing ?? [], null, 2)}
+
+Kald ALTID upsert_task værktøjet.`;
+
     const userContent: any[] = [];
-    if (text) {
-      userContent.push({ type: "text", text });
-    }
+    if (text) userContent.push({ type: "text", text });
     if (audio_base64) {
-      userContent.push({ type: "text", text: "Transcribe this audio note and extract a structured task." });
+      userContent.push({ type: "text", text: "Transskribér denne stemmenote og udled en struktureret opgave på dansk." });
       userContent.push({
         type: "input_audio",
         input_audio: { data: audio_base64, format: (mime_type?.includes("wav") ? "wav" : "webm") },
@@ -61,23 +88,26 @@ serve(async (req) => {
         tools: [{
           type: "function",
           function: {
-            name: "create_task",
-            description: "Create a structured task from the user's note.",
+            name: "upsert_task",
+            description: "Opret en ny opgave eller opdatér en eksisterende baseret på note.",
             parameters: {
               type: "object",
               properties: {
-                title: { type: "string", description: "Concise task title (<100 chars)" },
-                description: { type: "string", description: "Optional details, or full transcript" },
+                action: { type: "string", enum: ["create", "update"] },
+                existing_task_id: { type: "string", description: "Kun ved action=update" },
+                title: { type: "string", description: "Kort emne 3-7 ord på dansk" },
+                summary: { type: "string", description: "1-2 sætningers resume på dansk" },
+                transcript: { type: "string", description: "Ordret transskription / råtekst" },
                 priority: { type: "string", enum: ["urgent", "high", "medium", "low"] },
-                category: { type: "string", description: "e.g. Work, Personal, Errands, Health" },
-                due_date: { type: "string", description: "ISO 8601 datetime, or empty string" },
+                category: { type: "string", description: "fx Arbejde, Privat, Ærinder, Sundhed" },
+                due_date: { type: "string", description: "ISO 8601 datotid eller tom streng" },
               },
-              required: ["title", "priority", "category"],
+              required: ["action", "title", "priority", "category"],
               additionalProperties: false,
             },
           },
         }],
-        tool_choice: { type: "function", function: { name: "create_task" } },
+        tool_choice: { type: "function", function: { name: "upsert_task" } },
       }),
     });
 
@@ -85,12 +115,12 @@ serve(async (req) => {
       const errTxt = await aiRes.text();
       console.error("Lovable AI error:", aiRes.status, errTxt);
       if (aiRes.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit reached, please try again shortly." }), {
+        return new Response(JSON.stringify({ error: "Rate limit nået, prøv igen om lidt." }), {
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       if (aiRes.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted. Add funds in Lovable workspace settings." }), {
+        return new Response(JSON.stringify({ error: "AI-credits opbrugt. Tilføj kredit i Lovable workspace settings." }), {
           status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
@@ -102,24 +132,48 @@ serve(async (req) => {
     if (!toolCall) throw new Error("Model did not return a tool call");
     const args = JSON.parse(toolCall.function.arguments);
 
-    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const dueIso = args.due_date && args.due_date.length > 0 ? args.due_date : null;
+    const transcript = args.transcript ?? text ?? null;
+
+    if (args.action === "update" && args.existing_task_id) {
+      const { data, error } = await supabase
+        .from("tasks")
+        .update({
+          title: args.title,
+          summary: args.summary ?? null,
+          transcript,
+          priority: args.priority,
+          category: args.category,
+          due_date: dueIso,
+        })
+        .eq("id", args.existing_task_id)
+        .eq("user_id", user_id)
+        .select()
+        .single();
+      if (error) throw error;
+      return new Response(JSON.stringify({ task: data, action: "updated" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { data, error } = await supabase
       .from("tasks")
       .insert({
         user_id,
         title: args.title,
-        description: args.description ?? text ?? null,
+        summary: args.summary ?? null,
+        transcript,
+        description: null,
         priority: args.priority,
         category: args.category,
-        due_date: args.due_date && args.due_date.length > 0 ? args.due_date : null,
+        due_date: dueIso,
         source: audio_base64 ? "voice" : "text",
       })
       .select()
       .single();
-
     if (error) throw error;
 
-    return new Response(JSON.stringify({ task: data }), {
+    return new Response(JSON.stringify({ task: data, action: "created" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
