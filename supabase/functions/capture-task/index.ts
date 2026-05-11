@@ -43,8 +43,27 @@ serve(async (req) => {
       .order("created_at", { ascending: false })
       .limit(40);
 
-    const today = new Date().toISOString();
-    const systemPrompt = `Du er en dansktalende assistent for en dansk bruger. Du konverterer en talt eller skriftlig note til en struktureret opgave til brugeren selv. Dato/tid er ${today} (Europe/Copenhagen).
+    // Beregn nuværende tid i Europe/Copenhagen som ISO med korrekt offset
+    const now = new Date();
+    const cphParts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Copenhagen",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false,
+    }).formatToParts(now).reduce((acc: Record<string, string>, p) => {
+      if (p.type !== "literal") acc[p.type] = p.value;
+      return acc;
+    }, {});
+    // Find offset (fx +02:00 om sommeren, +01:00 om vinteren)
+    const offsetMin = -new Date(now.toLocaleString("en-US", { timeZone: "Europe/Copenhagen" })).getTimezoneOffset();
+    // Brug en mere pålidelig metode: udregn diff mellem cph-vægur og UTC
+    const cphAsUtc = Date.UTC(+cphParts.year, +cphParts.month - 1, +cphParts.day, +cphParts.hour, +cphParts.minute, +cphParts.second);
+    const offsetMinutes = Math.round((cphAsUtc - now.getTime()) / 60000);
+    const sign = offsetMinutes >= 0 ? "+" : "-";
+    const abs = Math.abs(offsetMinutes);
+    const offsetStr = `${sign}${String(Math.floor(abs / 60)).padStart(2, "0")}:${String(abs % 60).padStart(2, "0")}`;
+    const todayLocal = `${cphParts.year}-${cphParts.month}-${cphParts.day}T${cphParts.hour}:${cphParts.minute}:${cphParts.second}${offsetStr}`;
+
+    const systemPrompt = `Du er en dansktalende assistent for en dansk bruger. Du konverterer en talt eller skriftlig note til en struktureret opgave til brugeren selv. Nuværende tid er ${todayLocal} (Europe/Copenhagen, offset ${offsetStr}).
 
 REGLER:
 - Skriv ALTID på dansk. Brug danske ord og dansk stavemåde. Brug kun engelske ord hvis du er helt sikker på at brugeren brugte dem som egennavne (fx produktnavne, firmanavne) — ellers oversæt til dansk.
@@ -56,7 +75,7 @@ REGLER:
    * Behold brugerens egen stemme, ordvalg og betydning — omskriv ikke unødigt. Ret kun grammatik og tegnsætning så det bliver flydende.
    * Skriv det som hele, velformede sætninger i FØRSTE person ("jeg skal…") — det er brugerens egne ord.
 - "summary" skal være et 1-2 sætningers resume af hvad der skal gøres, skrevet direkte til brugeren i ANDEN person ("du skal…") eller som imperativ ("Ring til…", "Forbered…"). ALDRIG "brugeren skal".
-- Udled forfaldsdato fra naturligt sprog ("i morgen kl 15", "næste mandag", "om 2 timer") og returnér som ISO 8601.
+- Udled forfaldsdato fra naturligt sprog ("i morgen kl 15", "næste mandag", "om 2 timer"). Tider brugeren nævner er ALTID lokal dansk tid (Europe/Copenhagen). Returnér som ISO 8601 MED det korrekte offset for Europe/Copenhagen (${offsetStr}) — fx "2026-05-12T20:00:00${offsetStr}". Brug ALDRIG "Z" eller UTC.
 - Sæt prioritet ud fra hastværk i stemmen/teksten.
 
 DUPLIKATER OG OPDATERING:
