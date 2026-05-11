@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/use-auth";
 
@@ -28,44 +29,47 @@ function Auth() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center px-4">
-      <div className="absolute inset-0 grid-bg opacity-30 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-      <div className="relative w-full max-w-sm">
-        <div className="mb-8 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/15 text-primary">
+    <div className="relative flex min-h-screen items-center justify-center px-4 bg-background">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 220, damping: 26 }}
+        className="frosted-strong relative w-full max-w-sm rounded-2xl p-8"
+      >
+        <div className="mb-7 flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 text-primary">
             <Sparkles className="h-4 w-4" />
           </div>
           <span className="text-base font-semibold tracking-tight">TaskSnap</span>
         </div>
-        <h1 className="text-2xl font-semibold tracking-tight">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Voice-captured tasks, beautifully organized.</p>
+        <h1 className="text-2xl font-semibold tracking-tight">{mode === "signin" ? "Velkommen tilbage" : "Opret konto"}</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">Stemmeoptagne opgaver, smukt organiseret.</p>
 
         <form onSubmit={submit} className="mt-6 space-y-3">
           <input
             type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@work.com"
-            className="w-full rounded-md border border-border bg-input px-3 py-2 text-sm focus:border-primary/60 focus:outline-none"
+            placeholder="dig@arbejde.dk"
+            className="w-full rounded-lg border border-border bg-background/50 px-3 py-2.5 text-sm focus:border-primary/60 focus:outline-none"
           />
           <input
             type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            className="w-full rounded-md border border-border bg-input px-3 py-2 text-sm focus:border-primary/60 focus:outline-none"
+            placeholder="Adgangskode"
+            className="w-full rounded-lg border border-border bg-background/50 px-3 py-2.5 text-sm focus:border-primary/60 focus:outline-none"
           />
           {error && <p className="text-xs text-destructive">{error}</p>}
           <button
             type="submit" disabled={busy}
-            className="w-full rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="w-full rounded-lg bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 disabled:opacity-50 shadow-[var(--shadow-warm)]"
           >
-            {busy ? "…" : mode === "signin" ? "Sign in" : "Create account"}
+            {busy ? "…" : mode === "signin" ? "Log ind" : "Opret konto"}
           </button>
         </form>
         <button
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="mt-4 text-xs text-muted-foreground hover:text-foreground"
+          className="mt-5 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          {mode === "signin" ? "Need an account? Sign up" : "Have an account? Sign in"}
+          {mode === "signin" ? "Har du ikke en konto? Opret én" : "Har du allerede en konto? Log ind"}
         </button>
-      </div>
+      </motion.div>
     </div>
   );
 }

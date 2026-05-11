@@ -9,8 +9,8 @@ export const Route = createFileRoute("/")({ component: Today });
 
 function Today() {
   return (
-    <AppShell title="Today" subtitle="Focus on what matters now.">
-      {({ tasks, userId }) => {
+    <AppShell title="I dag" subtitle="Fokuser på det vigtigste lige nu.">
+      {({ tasks, userId, openTask }) => {
         const open = tasks.filter((t) => t.status !== "done");
         const today = open.filter((t) => {
           if (!t.due_date) return false;
@@ -21,15 +21,15 @@ function Today() {
           PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
 
         return (
-          <div className="space-y-8">
+          <div className="space-y-10">
             <QuickAdd userId={userId} />
             <section>
-              <SectionLabel count={today.length}>Due today &amp; overdue</SectionLabel>
-              <TaskList tasks={today.sort(sort)} empty="You're all caught up." />
+              <SectionLabel count={today.length}>Forfalder i dag &amp; forsinkede</SectionLabel>
+              <TaskList tasks={today.sort(sort)} empty="Du er på toppen af det hele." onOpen={openTask} />
             </section>
             <section>
-              <SectionLabel count={noDate.length}>Inbox</SectionLabel>
-              <TaskList tasks={noDate.sort(sort)} empty="No untriaged tasks." />
+              <SectionLabel count={noDate.length}>Indbakke</SectionLabel>
+              <TaskList tasks={noDate.sort(sort)} empty="Ingen utriagerede opgaver." onOpen={openTask} />
             </section>
           </div>
         );
@@ -40,7 +40,7 @@ function Today() {
 
 function SectionLabel({ children, count }: { children: React.ReactNode; count: number }) {
   return (
-    <div className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+    <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
       <span>{children}</span>
       <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">{count}</span>
     </div>
