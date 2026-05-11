@@ -72,7 +72,7 @@
 		873B255ABCE059148A425342 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		8BE8D8E4755A76DD9E33B098 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8ECF818880750DC461D3407C /* VocaFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VocaFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = VocaFlowActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VocaFlowActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		99909D4BD83FA4D7BEE9EED1 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		A0443226BDC8E074945E267D /* BackgroundRecordingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRecordingService.swift; sourceTree = "<group>"; };
 		BC5B348E056F79F1535477E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -236,9 +236,6 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					00820452F88F494B2F2F2C0B = {
-						DevelopmentTeam = "";
-					};
 					700CDEC9393BB160E7DC6602 = {
 						DevelopmentTeam = 8D786HJQF9;
 					};
@@ -343,7 +340,7 @@
 		29E81FB6D47D8BEFFC34169E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8D786HJQF9;
 				INFOPLIST_FILE = VocaFlowActivity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -360,7 +357,7 @@
 		38DB49DA4AB0584AE3208BAC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8D786HJQF9;
 				INFOPLIST_FILE = VocaFlowActivity/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (

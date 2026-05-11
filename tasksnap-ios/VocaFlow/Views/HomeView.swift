@@ -193,12 +193,12 @@ struct HomeView: View {
     }
 
     private func stopAndSend() {
-        LiveActivityManager.shared.stop()
         guard let url = recorder.stopRecording() else {
             withAnimation { phase = .idle }
             return
         }
         withAnimation { phase = .analyzing }
+        LiveActivityManager.shared.setAnalyzing()
 
         Task {
             do {
@@ -206,12 +206,14 @@ struct HomeView: View {
                 try await SupabaseService.shared.captureTask(audioData: data)
                 try? FileManager.default.removeItem(at: url)
                 await MainActor.run {
+                    LiveActivityManager.shared.complete()
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.65)) {
                         phase = .success
                     }
                 }
             } catch {
                 await MainActor.run {
+                    LiveActivityManager.shared.stop()
                     withAnimation { phase = .failure(error.localizedDescription) }
                 }
             }
