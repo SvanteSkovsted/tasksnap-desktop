@@ -65,18 +65,18 @@ jobs:
       - name: Sync version from tag
         run: node scripts/set-version.cjs ${{ github.ref_name }}
 
-      - name: Build (universal macOS)
+      - name: Build (universal macOS, unsigned)
         env:
           VITE_SUPABASE_URL:             ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          # ── Code signing / notarization (leave blank to build unsigned) ──
-          APPLE_CERTIFICATE:            ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD:   ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY:       ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_ID:                     ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD:               ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID:                ${{ secrets.APPLE_TEAM_ID }}
-        run: npm run tauri build -- --target universal-apple-darwin
+          # "-" tells codesign to ad-hoc sign (no certificate required).
+          # TAURI_SIGNING_PRIVATE_KEY empty disables Tauri's updater signing.
+          APPLE_SIGNING_IDENTITY:        "-"
+          TAURI_SIGNING_PRIVATE_KEY:     ""
+        run: |
+          npm run tauri build -- \
+            --target universal-apple-darwin \
+            --config '{"bundle":{"macOS":{"signingIdentity":null}}}'
 
       # Upload the .dmg to the GitHub Release (creates the release if it
       # doesn't exist yet; subsequent jobs add their files to the same one).
