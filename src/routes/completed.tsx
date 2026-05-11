@@ -6,12 +6,12 @@ export const Route = createFileRoute("/completed")({ component: Completed });
 
 function Completed() {
   return (
-    <AppShell title="Completed" subtitle="A record of what you've shipped.">
-      {({ tasks }) => {
+    <AppShell title="Færdige" subtitle="Et arkiv over hvad du har gennemført.">
+      {({ tasks, openTask }) => {
         const done = tasks.filter((t) => t.status === "done").sort((a, b) =>
           new Date(b.completed_at ?? b.updated_at).getTime() - new Date(a.completed_at ?? a.updated_at).getTime()
         );
-        return <TaskList tasks={done} empty="No completed tasks yet." />;
+        return <TaskList tasks={done} empty="Ingen færdige opgaver endnu." onOpen={openTask} />;
       }}
     </AppShell>
   );

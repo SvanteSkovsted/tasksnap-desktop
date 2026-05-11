@@ -5,11 +5,14 @@ export type Task = {
   user_id: string;
   title: string;
   description: string | null;
+  summary: string | null;
+  transcript: string | null;
   priority: "urgent" | "high" | "medium" | "low";
   status: "todo" | "in_progress" | "done";
   category: string | null;
   due_date: string | null;
   completed_at: string | null;
+  reminder_minutes: number | null;
   source: string | null;
   created_at: string;
   updated_at: string;
@@ -17,6 +20,10 @@ export type Task = {
 
 export const PRIORITY_ORDER: Record<Task["priority"], number> = {
   urgent: 0, high: 1, medium: 2, low: 3,
+};
+
+export const PRIORITY_LABEL: Record<Task["priority"], string> = {
+  urgent: "Akut", high: "Høj", medium: "Medium", low: "Lav",
 };
 
 export const priorityClass = (p: Task["priority"]) => {
@@ -37,5 +44,4 @@ export const priorityDot = (p: Task["priority"]) => {
   }
 };
 
-// keep for type import
 export type _DB = Database;

@@ -13,6 +13,7 @@ import { Route as UpcomingRouteImport } from './routes/upcoming'
 import { Route as CompletedRouteImport } from './routes/completed'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AllRouteImport } from './routes/all'
 import { Route as IndexRouteImport } from './routes/index'
 
 const UpcomingRoute = UpcomingRouteImport.update({
@@ -35,6 +36,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AllRoute = AllRouteImport.update({
+  id: '/all',
+  path: '/all',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/all': typeof AllRoute
   '/auth': typeof AuthRoute
   '/calendar': typeof CalendarRoute
   '/completed': typeof CompletedRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/all': typeof AllRoute
   '/auth': typeof AuthRoute
   '/calendar': typeof CalendarRoute
   '/completed': typeof CompletedRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/all': typeof AllRoute
   '/auth': typeof AuthRoute
   '/calendar': typeof CalendarRoute
   '/completed': typeof CompletedRoute
@@ -65,14 +74,22 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/calendar' | '/completed' | '/upcoming'
+  fullPaths: '/' | '/all' | '/auth' | '/calendar' | '/completed' | '/upcoming'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/calendar' | '/completed' | '/upcoming'
-  id: '__root__' | '/' | '/auth' | '/calendar' | '/completed' | '/upcoming'
+  to: '/' | '/all' | '/auth' | '/calendar' | '/completed' | '/upcoming'
+  id:
+    | '__root__'
+    | '/'
+    | '/all'
+    | '/auth'
+    | '/calendar'
+    | '/completed'
+    | '/upcoming'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AllRoute: typeof AllRoute
   AuthRoute: typeof AuthRoute
   CalendarRoute: typeof CalendarRoute
   CompletedRoute: typeof CompletedRoute
@@ -109,6 +126,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/all': {
+      id: '/all'
+      path: '/all'
+      fullPath: '/all'
+      preLoaderRoute: typeof AllRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,6 +145,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AllRoute: AllRoute,
   AuthRoute: AuthRoute,
   CalendarRoute: CalendarRoute,
   CompletedRoute: CompletedRoute,

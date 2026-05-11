@@ -9,22 +9,18 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { ThemeProvider } from "@/lib/theme";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Siden blev ikke fundet</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Den side du leder efter findes ikke eller er flyttet.</p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
+          <Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+            Til forsiden
           </Link>
         </div>
       </div>
@@ -35,32 +31,14 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">Siden kunne ikke indlæses</h1>
+        <p className="mt-2 text-sm text-muted-foreground">Der gik noget galt. Prøv at genindlæse eller gå til forsiden.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
+          <button onClick={() => { router.invalidate(); reset(); }} className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">Prøv igen</button>
+          <a href="/" className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent">Til forsiden</a>
         </div>
       </div>
     </div>
@@ -72,23 +50,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TaskSnap — Voice-captured tasks, beautifully organized" },
-      { name: "description", content: "TaskSnap turns your voice into structured tasks. A premium task dashboard inspired by Linear, Vercel and Raycast." },
-      { property: "og:title", content: "TaskSnap — Voice-captured tasks, beautifully organized" },
-      { property: "og:description", content: "TaskSnap turns your voice into structured tasks. A premium task dashboard inspired by Linear, Vercel and Raycast." },
+      { title: "TaskSnap — Stemmeoptagne opgaver, smukt organiseret" },
+      { name: "description", content: "TaskSnap forvandler din stemme til strukturerede opgaver. Et premium opgave-dashboard inspireret af Linear, Notion og Apple." },
+      { property: "og:title", content: "TaskSnap — Stemmeoptagne opgaver, smukt organiseret" },
+      { property: "og:description", content: "TaskSnap forvandler din stemme til strukturerede opgaver." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "TaskSnap — Voice-captured tasks, beautifully organized" },
-      { name: "twitter:description", content: "TaskSnap turns your voice into structured tasks. A premium task dashboard inspired by Linear, Vercel and Raycast." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4c9025b2-0bf4-4e6b-972d-aebd68559f2a/id-preview-e00b69ae--cb8d2bcd-bb17-4b35-874f-609062c493d6.lovable.app-1778498876244.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4c9025b2-0bf4-4e6b-972d-aebd68559f2a/id-preview-e00b69ae--cb8d2bcd-bb17-4b35-874f-609062c493d6.lovable.app-1778498876244.png" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -99,7 +72,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="da">
       <head>
         <HeadContent />
       </head>
@@ -113,10 +86,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <ThemeProvider>
+        <Outlet />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
