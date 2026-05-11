@@ -2,35 +2,75 @@ import Foundation
 import AVFoundation
 
 // Manages recording initiated from the Action Button intent.
-// State is persisted to UserDefaults so a second intent invocation works even if
-// the process was suspended and relaunched between the two Action Button presses.
+//
+// iOS may spawn a fresh process for the second intent invocation, so in-memory
+// state is unreliable. A JSON state file written to the App Group shared
+// container persists across process boundaries — the file's existence means
+// "recording is in progress" and it carries the path to the audio file.
 @MainActor
 final class BackgroundRecordingService: ObservableObject {
     static let shared = BackgroundRecordingService()
+
     private init() {
-        // Restore in-memory flag from persisted state on cold launch.
-        isRecording = UserDefaults.standard.bool(forKey: Keys.isRecording)
+        // Restore flag from the group container on cold launch.
+        isRecording = Self.readState() != nil
     }
 
     @Published private(set) var isRecording = false
 
-    private enum Keys {
-        static let isRecording   = "vocaflow.bg.isRecording"
-        static let recordingPath = "vocaflow.bg.recordingPath"
-    }
-
     private var engine: AVAudioEngine?
     private var audioFile: AVAudioFile?
-    // In-memory URL; the path is also persisted so we can recover it after a relaunch.
     private var recordingURL: URL?
+
+    // MARK: - App Group container
+
+    private static let groupID = "group.io.vocaflow.app"
+
+    private struct RecordingState: Codable {
+        let recordingPath: String
+    }
+
+    /// URL of the state sentinel file in the shared container.
+    private static var stateFileURL: URL? {
+        FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: groupID)?
+            .appendingPathComponent("vocaflow_recording_state.json")
+    }
+
+    /// URL for the audio recording file in the shared container.
+    private static func newRecordingURL() -> URL {
+        let container = FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: groupID)
+        let dir = container ?? FileManager.default.temporaryDirectory
+        return dir.appendingPathComponent("vf_bg_\(Int(Date().timeIntervalSince1970)).m4a")
+    }
+
+    private static func readState() -> RecordingState? {
+        guard let url = stateFileURL,
+              FileManager.default.fileExists(atPath: url.path),
+              let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(RecordingState.self, from: data)
+    }
+
+    private static func writeState(_ state: RecordingState) {
+        guard let url = stateFileURL,
+              let data = try? JSONEncoder().encode(state) else { return }
+        try? data.write(to: url, options: .atomic)
+    }
+
+    private static func deleteState() {
+        guard let url = stateFileURL else { return }
+        try? FileManager.default.removeItem(at: url)
+    }
 
     // MARK: - Toggle (single entry point from the intent)
 
     func toggle() async {
-        // Check persisted state — not just in-memory — so the second press works
-        // even if the process was suspended and relaunched between presses.
-        if UserDefaults.standard.bool(forKey: Keys.isRecording) {
-            await stopAndUpload()
+        if let state = Self.readState() {
+            // State file exists → recording is in progress, stop it.
+            // Recover the URL from the file in case this is a fresh process.
+            let url = recordingURL ?? URL(fileURLWithPath: state.recordingPath)
+            await stopAndUpload(url: url)
         } else {
             start()
         }
@@ -48,9 +88,7 @@ final class BackgroundRecordingService: ObservableObject {
 
             let input  = newEngine.inputNode
             let format = input.outputFormat(forBus: 0)
-
-            let url = FileManager.default.temporaryDirectory
-                .appendingPathComponent("vf_bg_\(Int(Date().timeIntervalSince1970)).m4a")
+            let url    = Self.newRecordingURL()
 
             let settings: [String: Any] = [
                 AVFormatIDKey:            kAudioFormatMPEG4AAC,
@@ -61,16 +99,14 @@ final class BackgroundRecordingService: ObservableObject {
 
             let file = try AVAudioFile(forWriting: url, settings: settings)
 
-            // Persist BEFORE starting so state is correct if the tap fires immediately.
-            UserDefaults.standard.set(url.path, forKey: Keys.recordingPath)
-            UserDefaults.standard.set(true, forKey: Keys.isRecording)
+            // Write state file before the tap fires so the second press always
+            // sees the "recording in progress" sentinel.
+            Self.writeState(RecordingState(recordingPath: url.path))
 
             audioFile    = file
             recordingURL = url
             engine       = newEngine
 
-            // The tap closure captures `file` by value to avoid a data race; the
-            // write happens on a real-time audio thread.
             input.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
                 try? file.write(from: buffer)
             }
@@ -80,9 +116,7 @@ final class BackgroundRecordingService: ObservableObject {
             LiveActivityManager.shared.start()
         } catch {
             print("BackgroundRecordingService start error:", error)
-            // Roll back persisted state if setup failed.
-            UserDefaults.standard.removeObject(forKey: Keys.isRecording)
-            UserDefaults.standard.removeObject(forKey: Keys.recordingPath)
+            Self.deleteState()
             teardownEngine()
         }
     }
@@ -90,21 +124,18 @@ final class BackgroundRecordingService: ObservableObject {
     // MARK: - Stop + upload
 
     func stopAndUpload() async {
-        // Resolve URL from memory first, fall back to persisted path (process relaunch case).
-        let url = recordingURL
-            ?? UserDefaults.standard.string(forKey: Keys.recordingPath)
-                .map { URL(fileURLWithPath: $0) }
+        let url = recordingURL ?? Self.readState().map { URL(fileURLWithPath: $0.recordingPath) }
+        await stopAndUpload(url: url)
+    }
 
+    private func stopAndUpload(url: URL?) async {
         teardownEngine()
 
-        // Clear persisted state immediately so a race-condition third press doesn't
-        // try to upload the same file twice.
-        UserDefaults.standard.removeObject(forKey: Keys.isRecording)
-        UserDefaults.standard.removeObject(forKey: Keys.recordingPath)
+        // Delete state file immediately — any further press will start a new recording.
+        Self.deleteState()
         recordingURL = nil
         isRecording  = false
 
-        // Transition Dynamic Island to "analyzing" while we upload.
         LiveActivityManager.shared.setAnalyzing()
 
         guard let url else {
@@ -120,8 +151,6 @@ final class BackgroundRecordingService: ObservableObject {
             print("BackgroundRecordingService upload error:", error)
         }
 
-        // Show checkmark in Dynamic Island regardless of upload outcome,
-        // then auto-dismiss after 3 s.
         LiveActivityManager.shared.complete()
     }
 
