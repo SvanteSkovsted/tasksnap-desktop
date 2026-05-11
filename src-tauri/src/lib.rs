@@ -49,13 +49,16 @@ fn set_recording_mode(app: tauri::AppHandle, hold: bool) {
 
 // ── macOS window level ────────────────────────────────────────────────────────
 
-/// Lift the window above all normal apps (including Safari and full-screen
-/// spaces) by setting NSStatusWindowLevel (25) and the collection behaviour
-/// flags that allow it to join every Space and appear over full-screen apps.
+/// Set the collection-behaviour flags that let the window appear on every
+/// Space and over full-screen apps.  The *level* is handled separately via
+/// Tauri's set_always_on_top() (= NSFloatingWindowLevel = 3); we deliberately
+/// do NOT call setLevel: here because level-25 (NSStatusWindowLevel) places
+/// the window in the menu-bar tier, which macOS clips outside the normal
+/// screen area — that is what was causing the window not to appear.
 #[cfg(target_os = "macos")]
-unsafe fn configure_macos_window(win: &tauri::WebviewWindow) {
-    use objc2::runtime::AnyObject;
+unsafe fn set_collection_behavior(win: &tauri::WebviewWindow) {
     use objc2::msg_send;
+    use objc2::runtime::AnyObject;
 
     let raw = match win.ns_window() {
         Ok(ptr) => ptr,
@@ -63,11 +66,8 @@ unsafe fn configure_macos_window(win: &tauri::WebviewWindow) {
     };
     let ns_win: *mut AnyObject = raw as *mut AnyObject;
 
-    // NSStatusWindowLevel = 25 — above normal windows and full-screen apps
-    let _: () = msg_send![ns_win, setLevel: 25_i64];
-
-    // Read current NSWindowCollectionBehavior bitmask and OR in:
-    //   NSWindowCollectionBehaviorCanJoinAllSpaces   = 1   (bit 0)
+    // OR in two flags:
+    //   NSWindowCollectionBehaviorCanJoinAllSpaces    = 1   (bit 0)
     //   NSWindowCollectionBehaviorFullScreenAuxiliary = 256 (bit 8)
     let behavior: u64 = msg_send![ns_win, collectionBehavior];
     let _: () = msg_send![ns_win, setCollectionBehavior: behavior | 1u64 | 256u64];
@@ -100,6 +100,9 @@ fn show_hold_window(app: &tauri::AppHandle) {
     }
 
     let _ = win.show();
+    // Re-assert NSFloatingWindowLevel (3) after show — set_size can silently
+    // drop the always-on-top flag on some macOS versions.
+    let _ = win.set_always_on_top(true);
     let _ = win.set_focus();
     let _ = win.emit("shortcut-pressed", ());
 }
@@ -108,8 +111,11 @@ fn show_hold_window(app: &tauri::AppHandle) {
 fn show_click_window(app: &tauri::AppHandle) {
     let Some(win) = app.get_webview_window("main") else { return };
     let _ = win.set_size(LogicalSize::new(320u32, 260u32));
-    let _ = win.center();
     let _ = win.show();
+    let _ = win.center();
+    // Re-assert NSFloatingWindowLevel (3) — must come after show() so the
+    // window handle is live on macOS.
+    let _ = win.set_always_on_top(true);
     let _ = win.set_focus();
 }
 
@@ -183,12 +189,13 @@ pub fn run() {
             #[cfg(target_os = "macos")]
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 
-            // Apply elevated window level + all-spaces behaviour to the
-            // capture window so it appears above Safari, Chrome, and
-            // full-screen apps on every Space.
+            // Set the all-spaces / full-screen collection behaviour once at
+            // startup.  The floating level is re-asserted by set_always_on_top
+            // inside show_click_window / show_hold_window every time the
+            // window is displayed.
             #[cfg(target_os = "macos")]
             if let Some(win) = app.get_webview_window("main") {
-                unsafe { configure_macos_window(&win); }
+                unsafe { set_collection_behavior(&win); }
             }
 
             use tauri_plugin_autostart::ManagerExt;

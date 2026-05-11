@@ -4,7 +4,14 @@
       "Bash(python3 *)",
       "Bash(npm install *)",
       "Bash(npm audit *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(jobs -l)",
+      "Bash(pkill -f \"tauri dev\")",
+      "Bash(pkill -f \"vite\")",
+      "Bash(pkill -f \"tasksnap\")",
+      "Read(//tmp/**)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

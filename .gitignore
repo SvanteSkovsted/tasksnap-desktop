@@ -1,5 +1,15 @@
+# JS
 node_modules
 dist
+
+# Secrets
 .env
+
+# Rust build artefacts
 src-tauri/target
+
+# Tauri auto-generated schemas (rebuilt on every cargo build)
 src-tauri/gen
+
+# Claude Code project settings
+.claude

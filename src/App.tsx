@@ -160,6 +160,7 @@ export default function App() {
     try {
       const base64 = await blobToBase64(blob);
       console.log("[TaskSnap] base64 length:", base64.length);
+      console.log("[TaskSnap] POST →", ENDPOINT);
 
       const res = await fetch(ENDPOINT, {
         method:  "POST",
