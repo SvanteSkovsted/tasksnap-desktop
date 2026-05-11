@@ -8,7 +8,7 @@ import { Waveform } from "./Waveform";
 type AppState      = "idle" | "recording" | "sending" | "success" | "error";
 type RecordingMode = "click" | "hold";
 
-const ENDPOINT = import.meta.env.VITE_SUPABASE_ENDPOINT as string;
+const ENDPOINT = import.meta.env.VITE_SUPABASE_URL as string;
 
 const MODE_KEY = "tasksnap_recording_mode";
 

@@ -6,8 +6,8 @@
 # then attaches both to a GitHub Release.
 #
 # Required repository secrets (Settings → Secrets → Actions):
-#   VITE_SUPABASE_ENDPOINT   - your Supabase Edge Function URL
-#   VITE_SUPABASE_ANON_KEY   - your Supabase anon/public key
+#   VITE_SUPABASE_URL              - full Edge Function URL (e.g. https://xxx.supabase.co/functions/v1/capture-task)
+#   VITE_SUPABASE_PUBLISHABLE_KEY  - Supabase anon/public key
 #
 # Optional secrets for macOS notarization (unsigned builds still work, but
 # Gatekeeper will warn on first launch):
@@ -67,8 +67,8 @@ jobs:
 
       - name: Build (universal macOS)
         env:
-          VITE_SUPABASE_ENDPOINT:       ${{ secrets.VITE_SUPABASE_ENDPOINT }}
-          VITE_SUPABASE_ANON_KEY:       ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_URL:             ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           # ── Code signing / notarization (leave blank to build unsigned) ──
           APPLE_CERTIFICATE:            ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD:   ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -118,8 +118,8 @@ jobs:
 
       - name: Build (Windows x64)
         env:
-          VITE_SUPABASE_ENDPOINT: ${{ secrets.VITE_SUPABASE_ENDPOINT }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_URL:             ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
         run: npm run tauri build
 
       - name: Upload .msi and .exe to release

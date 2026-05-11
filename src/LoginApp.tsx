@@ -7,7 +7,7 @@ import { AUTH_KEYS, clearAuth, getAuth } from "./auth";
 const SUPABASE_AUTH_URL =
   "https://hxrzqvagvpgyqejvjiil.supabase.co/auth/v1/token?grant_type=password";
 
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 
 type LoginState = "checking" | "idle" | "loading" | "error";
 
