@@ -1,6 +1,5 @@
 import ActivityKit
 import Foundation
-import VocaFlowShared
 
 @MainActor
 final class LiveActivityManager {
