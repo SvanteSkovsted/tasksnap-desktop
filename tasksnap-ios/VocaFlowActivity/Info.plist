@@ -9,7 +9,7 @@
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleDisplayName</key>
-	<string>VocaFlow</string>
+	<string>VocaFlow Recording</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
@@ -18,19 +18,12 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>VocaFlow needs microphone access to capture voice notes and turn them into tasks.</string>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
-	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
-	<true/>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<key>NSExtension</key>
+	<dict>
+		<!-- NSExtensionPrincipalClass must NOT be set for com.apple.widgetkit-extension -->
+		<!-- @main on VocaFlowActivityBundle is the entry point instead             -->
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.widgetkit-extension</string>
+	</dict>
 </dict>
 </plist>

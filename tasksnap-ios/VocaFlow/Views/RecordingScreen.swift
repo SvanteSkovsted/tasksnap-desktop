@@ -124,6 +124,7 @@ struct RecordingScreen: View {
     private func startRecording() {
         do {
             try recorder.startRecording()
+            LiveActivityManager.shared.start()
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { phase = .recording }
         } catch {
             withAnimation { phase = .error(error.localizedDescription) }
@@ -135,6 +136,7 @@ struct RecordingScreen: View {
             withAnimation { phase = .idle }
             return
         }
+        LiveActivityManager.shared.setAnalyzing()
         withAnimation { phase = .analyzing }
 
         Task {
@@ -143,12 +145,14 @@ struct RecordingScreen: View {
                 let title = try await SupabaseService.shared.captureTask(audioData: data)
                 try? FileManager.default.removeItem(at: url)
                 await MainActor.run {
+                    LiveActivityManager.shared.complete()
                     withAnimation(.spring(response: 0.45, dampingFraction: 0.65)) {
                         phase = .success(title)
                     }
                 }
             } catch {
                 await MainActor.run {
+                    LiveActivityManager.shared.stop()
                     withAnimation { phase = .error(error.localizedDescription) }
                 }
             }
