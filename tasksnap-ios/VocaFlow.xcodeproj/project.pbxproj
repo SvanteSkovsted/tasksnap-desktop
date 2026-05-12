@@ -8,103 +8,46 @@
 
 /* Begin PBXBuildFile section */
 		009B728526BC855317BE66DD /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756AB295FD24A64EC5723EEA /* KeychainService.swift */; };
-		065F49A0614F529238F8951E /* StopRecordingIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D96D0636156A729DF886ED /* StopRecordingIntent.swift */; };
-		0991FE6ECBFB0C5E2728AE8A /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8E3D20E012FC9051BB82E /* Color+Hex.swift */; };
 		187DE62ACF4E06B9A6970BA1 /* VocaFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE57DCD67E66CA8C970CCB3 /* VocaFlowApp.swift */; };
-		1947775B47F74B5A6AFA7342 /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F23FB6842082DC7429E830D /* LiveActivityManager.swift */; };
-		21A5919D139C0E8DF3609D65 /* RecordingLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7F5A7D203D50A24E312032 /* RecordingLiveActivity.swift */; };
 		2342A57FB47A5B3537655767 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8D8E4755A76DD9E33B098 /* LoginView.swift */; };
 		26404F270EF13DDA56E8344B /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8E3D20E012FC9051BB82E /* Color+Hex.swift */; };
-		4CBB84A622A0CD9AFCE66EF8 /* MicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD172A7C417C06D4DFCF6241 /* MicButton.swift */; };
+		377FDAF6DDD5EA29B6299196 /* RecordingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F0AA8195F4EF1CE90F0326 /* RecordingScreen.swift */; };
 		556F2A53F21A93AD8F48F827 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76EC3A121FD1E1B628F79CF2 /* Assets.xcassets */; };
 		5A3CC4BA8002710D54BA71FA /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99909D4BD83FA4D7BEE9EED1 /* AudioRecorder.swift */; };
-		66E7979ACB1067690A3435C6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873B255ABCE059148A425342 /* HomeView.swift */; };
 		7F917C3A3621ED5AFE93D1D9 /* SupabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B5922BA6646B01B1B9CC1D /* SupabaseService.swift */; };
-		91AC6A4F288091D96F093BA8 /* StopRecordingIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D96D0636156A729DF886ED /* StopRecordingIntent.swift */; };
-		935AAFFBE557471297136083 /* VocaFlowActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9652BD52633DEFE612631742 /* VocaFlowIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541D2E8A01C360D302C7B09B /* VocaFlowIntent.swift */; };
-		9E7D1B10BA1071C4F4510866 /* RecordingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */; };
 		A2424927A4C0C8F5EA21CF4E /* AnalyzingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF9106B5F68A3D5AC3A009D /* AnalyzingView.swift */; };
 		B01DC5E883DA210D75A0977E /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3FC361F10D5D785033EBC8 /* AuthState.swift */; };
-		C35383DABCA3CD34DD6CE6B5 /* RecordingTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4313B74193255B208B4A27C6 /* RecordingTrigger.swift */; };
 		D1A63F83E3A317BEC913D138 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606860E84277F10E6187B9F9 /* WaveformView.swift */; };
-		D4A8E1DB1F6CF7D7A8B09A93 /* RecordingActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */; };
-		D95E2B9914A1AB0E3E78F43D /* VocaFlowActivityBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7378685291CEC6B14F846CA /* VocaFlowActivityBundle.swift */; };
-		E19696A4485B166EF261F7E5 /* BackgroundRecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0443226BDC8E074945E267D /* BackgroundRecordingService.swift */; };
 		E3B2C8FF863F43F5D10E0BFE /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6615FC9EB195C1465642F /* SuccessView.swift */; };
 		EAFD8F8FE1C7338EA8977ABD /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3970C6C0DF5EB6A7D4980031 /* ErrorView.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A81CC1BD4980CC2C12538FB2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0D0A3C2060598B526C584784 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 00820452F88F494B2F2F2C0B;
-			remoteInfo = VocaFlowActivity;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		160287204A07A13DAF435728 /* Embed Foundation Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				935AAFFBE557471297136083 /* VocaFlowActivity.appex in Embed Foundation Extensions */,
-			);
-			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		0CD8E3D20E012FC9051BB82E /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		1A6DC20272E97DC024416FF5 /* VocaFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VocaFlow.entitlements; sourceTree = "<group>"; };
-		1D7F5A7D203D50A24E312032 /* RecordingLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingLiveActivity.swift; sourceTree = "<group>"; };
 		2FA6615FC9EB195C1465642F /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
 		3970C6C0DF5EB6A7D4980031 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
-		3F23FB6842082DC7429E830D /* LiveActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
-		4313B74193255B208B4A27C6 /* RecordingTrigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingTrigger.swift; sourceTree = "<group>"; };
 		4CE57DCD67E66CA8C970CCB3 /* VocaFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaFlowApp.swift; sourceTree = "<group>"; };
 		541D2E8A01C360D302C7B09B /* VocaFlowIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaFlowIntent.swift; sourceTree = "<group>"; };
 		606860E84277F10E6187B9F9 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
-		61D96D0636156A729DF886ED /* StopRecordingIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopRecordingIntent.swift; sourceTree = "<group>"; };
+		63F0AA8195F4EF1CE90F0326 /* RecordingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingScreen.swift; sourceTree = "<group>"; };
 		756AB295FD24A64EC5723EEA /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		76EC3A121FD1E1B628F79CF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7BF9106B5F68A3D5AC3A009D /* AnalyzingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzingView.swift; sourceTree = "<group>"; };
-		873B255ABCE059148A425342 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		8BE8D8E4755A76DD9E33B098 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8ECF818880750DC461D3407C /* VocaFlow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VocaFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = VocaFlowActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		99909D4BD83FA4D7BEE9EED1 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
-		A0443226BDC8E074945E267D /* BackgroundRecordingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRecordingService.swift; sourceTree = "<group>"; };
-		BC5B348E056F79F1535477E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C1B41C0C68CD9BB1CD82E530 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C2B5922BA6646B01B1B9CC1D /* SupabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseService.swift; sourceTree = "<group>"; };
-		CD172A7C417C06D4DFCF6241 /* MicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicButton.swift; sourceTree = "<group>"; };
-		CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingActivityAttributes.swift; sourceTree = "<group>"; };
-		D7378685291CEC6B14F846CA /* VocaFlowActivityBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VocaFlowActivityBundle.swift; sourceTree = "<group>"; };
 		FB3FC361F10D5D785033EBC8 /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		0CA02A59E31F81EEA07057CD /* VocaFlowActivity */ = {
-			isa = PBXGroup;
-			children = (
-				BC5B348E056F79F1535477E8 /* Info.plist */,
-				1D7F5A7D203D50A24E312032 /* RecordingLiveActivity.swift */,
-				D7378685291CEC6B14F846CA /* VocaFlowActivityBundle.swift */,
-			);
-			path = VocaFlowActivity;
-			sourceTree = "<group>";
-		};
 		5B293A071A1B9E35F55720F7 = {
 			isa = PBXGroup;
 			children = (
 				CE0057CC69C9B10077270E12 /* VocaFlow */,
-				0CA02A59E31F81EEA07057CD /* VocaFlowActivity */,
 				AE402E06E6F5C2B2E24A0868 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,7 +57,6 @@
 			children = (
 				76EC3A121FD1E1B628F79CF2 /* Assets.xcassets */,
 				FB3FC361F10D5D785033EBC8 /* AuthState.swift */,
-				4313B74193255B208B4A27C6 /* RecordingTrigger.swift */,
 				4CE57DCD67E66CA8C970CCB3 /* VocaFlowApp.swift */,
 			);
 			path = App;
@@ -124,7 +66,6 @@
 			isa = PBXGroup;
 			children = (
 				99909D4BD83FA4D7BEE9EED1 /* AudioRecorder.swift */,
-				A0443226BDC8E074945E267D /* BackgroundRecordingService.swift */,
 				756AB295FD24A64EC5723EEA /* KeychainService.swift */,
 				C2B5922BA6646B01B1B9CC1D /* SupabaseService.swift */,
 			);
@@ -135,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				8ECF818880750DC461D3407C /* VocaFlow.app */,
-				92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -145,9 +85,8 @@
 			children = (
 				7BF9106B5F68A3D5AC3A009D /* AnalyzingView.swift */,
 				3970C6C0DF5EB6A7D4980031 /* ErrorView.swift */,
-				873B255ABCE059148A425342 /* HomeView.swift */,
 				8BE8D8E4755A76DD9E33B098 /* LoginView.swift */,
-				CD172A7C417C06D4DFCF6241 /* MicButton.swift */,
+				63F0AA8195F4EF1CE90F0326 /* RecordingScreen.swift */,
 				2FA6615FC9EB195C1465642F /* SuccessView.swift */,
 				606860E84277F10E6187B9F9 /* WaveformView.swift */,
 			);
@@ -162,26 +101,15 @@
 				5E50B2FF4C86F31BE7136A5B /* App */,
 				FBCBD3CD1F048C03B53EF9C5 /* Extensions */,
 				D854356EC2E191A3D252AC8A /* Intents */,
-				D2EDF68E75F0236BA1E04A70 /* LiveActivity */,
 				A44986D02B16C2B2C94145B9 /* Services */,
 				CBA8E7811E1F6E5DC7E3C6B0 /* Views */,
 			);
 			path = VocaFlow;
 			sourceTree = "<group>";
 		};
-		D2EDF68E75F0236BA1E04A70 /* LiveActivity */ = {
-			isa = PBXGroup;
-			children = (
-				3F23FB6842082DC7429E830D /* LiveActivityManager.swift */,
-				CE7A1A0633FB55F6C669E85E /* RecordingActivityAttributes.swift */,
-			);
-			path = LiveActivity;
-			sourceTree = "<group>";
-		};
 		D854356EC2E191A3D252AC8A /* Intents */ = {
 			isa = PBXGroup;
 			children = (
-				61D96D0636156A729DF886ED /* StopRecordingIntent.swift */,
 				541D2E8A01C360D302C7B09B /* VocaFlowIntent.swift */,
 			);
 			path = Intents;
@@ -198,35 +126,16 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00820452F88F494B2F2F2C0B /* VocaFlowActivity */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3FA61F51B28BDC53486E8FB1 /* Build configuration list for PBXNativeTarget "VocaFlowActivity" */;
-			buildPhases = (
-				F1E651518E3664F434684248 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = VocaFlowActivity;
-			packageProductDependencies = (
-			);
-			productName = VocaFlowActivity;
-			productReference = 92C38E7A8FE8FA7BE420C3BB /* VocaFlowActivity.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		700CDEC9393BB160E7DC6602 /* VocaFlow */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A91EA95805BC035B2940347 /* Build configuration list for PBXNativeTarget "VocaFlow" */;
 			buildPhases = (
 				EB2DD6B73094603D4E8848FC /* Sources */,
 				7A21ADB5ECA47F818D269B8D /* Resources */,
-				160287204A07A13DAF435728 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5B2EAEBA9B4C64C118841BA4 /* PBXTargetDependency */,
 			);
 			name = VocaFlow;
 			packageProductDependencies = (
@@ -244,9 +153,6 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					00820452F88F494B2F2F2C0B = {
-						DevelopmentTeam = 8D786HJQF9;
-					};
 					700CDEC9393BB160E7DC6602 = {
 						DevelopmentTeam = 8D786HJQF9;
 					};
@@ -267,7 +173,6 @@
 			projectRoot = "";
 			targets = (
 				700CDEC9393BB160E7DC6602 /* VocaFlow */,
-				00820452F88F494B2F2F2C0B /* VocaFlowActivity */,
 			);
 		};
 /* End PBXProject section */
@@ -291,17 +196,11 @@
 				A2424927A4C0C8F5EA21CF4E /* AnalyzingView.swift in Sources */,
 				5A3CC4BA8002710D54BA71FA /* AudioRecorder.swift in Sources */,
 				B01DC5E883DA210D75A0977E /* AuthState.swift in Sources */,
-				E19696A4485B166EF261F7E5 /* BackgroundRecordingService.swift in Sources */,
 				26404F270EF13DDA56E8344B /* Color+Hex.swift in Sources */,
 				EAFD8F8FE1C7338EA8977ABD /* ErrorView.swift in Sources */,
-				66E7979ACB1067690A3435C6 /* HomeView.swift in Sources */,
 				009B728526BC855317BE66DD /* KeychainService.swift in Sources */,
-				1947775B47F74B5A6AFA7342 /* LiveActivityManager.swift in Sources */,
 				2342A57FB47A5B3537655767 /* LoginView.swift in Sources */,
-				4CBB84A622A0CD9AFCE66EF8 /* MicButton.swift in Sources */,
-				D4A8E1DB1F6CF7D7A8B09A93 /* RecordingActivityAttributes.swift in Sources */,
-				C35383DABCA3CD34DD6CE6B5 /* RecordingTrigger.swift in Sources */,
-				065F49A0614F529238F8951E /* StopRecordingIntent.swift in Sources */,
+				377FDAF6DDD5EA29B6299196 /* RecordingScreen.swift in Sources */,
 				E3B2C8FF863F43F5D10E0BFE /* SuccessView.swift in Sources */,
 				7F917C3A3621ED5AFE93D1D9 /* SupabaseService.swift in Sources */,
 				187DE62ACF4E06B9A6970BA1 /* VocaFlowApp.swift in Sources */,
@@ -310,27 +209,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F1E651518E3664F434684248 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0991FE6ECBFB0C5E2728AE8A /* Color+Hex.swift in Sources */,
-				9E7D1B10BA1071C4F4510866 /* RecordingActivityAttributes.swift in Sources */,
-				21A5919D139C0E8DF3609D65 /* RecordingLiveActivity.swift in Sources */,
-				91AC6A4F288091D96F093BA8 /* StopRecordingIntent.swift in Sources */,
-				D95E2B9914A1AB0E3E78F43D /* VocaFlowActivityBundle.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5B2EAEBA9B4C64C118841BA4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 00820452F88F494B2F2F2C0B /* VocaFlowActivity */;
-			targetProxy = A81CC1BD4980CC2C12538FB2 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0E18037182A8E6B096F7E498 /* Debug */ = {
@@ -346,40 +225,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "-DAPP_TARGET";
 				PRODUCT_BUNDLE_IDENTIFIER = io.vocaflow.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		29E81FB6D47D8BEFFC34169E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = 8D786HJQF9;
-				INFOPLIST_FILE = VocaFlowActivity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.vocaflow.app.activity;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		38DB49DA4AB0584AE3208BAC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = 8D786HJQF9;
-				INFOPLIST_FILE = VocaFlowActivity/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.vocaflow.app.activity;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
 		};
 		7AA5C4C01E90A5A53055B683 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -517,7 +367,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "-DAPP_TARGET";
 				PRODUCT_BUNDLE_IDENTIFIER = io.vocaflow.app;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -532,15 +381,6 @@
 			buildConfigurations = (
 				0E18037182A8E6B096F7E498 /* Debug */,
 				C43BCEB2554E339658F2B7E1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		3FA61F51B28BDC53486E8FB1 /* Build configuration list for PBXNativeTarget "VocaFlowActivity" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				29E81FB6D47D8BEFFC34169E /* Debug */,
-				38DB49DA4AB0584AE3208BAC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

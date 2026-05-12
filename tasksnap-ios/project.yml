@@ -25,32 +25,8 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: io.vocaflow.app
         INFOPLIST_FILE: VocaFlow/Info.plist
         DEVELOPMENT_TEAM: "8D786HJQF9"
-        OTHER_SWIFT_FLAGS: "-DAPP_TARGET"
     entitlements:
       path: VocaFlow/VocaFlow.entitlements
       properties:
         com.apple.security.application-groups:
           - group.io.vocaflow.app
-    dependencies:
-      - target: VocaFlowActivity
-
-  VocaFlowActivity:
-    type: app-extension
-    platform: iOS
-    deploymentTarget: "17.0"
-    sources:
-      # Shared type — same file compiled into both targets.
-      - path: VocaFlow/LiveActivity/RecordingActivityAttributes.swift
-      # Shared intent stub (Button(intent:) needs the type at compile time).
-      - path: VocaFlow/Intents/StopRecordingIntent.swift
-      # Shared colour tokens.
-      - path: VocaFlow/Extensions/Color+Hex.swift
-      # Widget-only sources.
-      - path: VocaFlowActivity
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: io.vocaflow.app.activity
-        INFOPLIST_FILE: VocaFlowActivity/Info.plist
-        DEVELOPMENT_TEAM: "8D786HJQF9"
-        SKIP_INSTALL: YES
-        LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"

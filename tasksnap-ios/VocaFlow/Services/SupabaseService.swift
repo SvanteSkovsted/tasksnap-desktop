@@ -27,7 +27,8 @@ final class SupabaseService {
 
     // MARK: - Capture
 
-    func captureTask(audioData: Data) async throws {
+    /// Returns the task title extracted from the server response, if present.
+    func captureTask(audioData: Data) async throws -> String? {
         guard
             let userId = KeychainService.shared.userId,
             let token  = KeychainService.shared.accessToken
@@ -49,6 +50,13 @@ final class SupabaseService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         try assertSuccess(response: response, data: data)
+
+        // Best-effort title extraction — structure varies by server version.
+        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            if let title = json["title"] as? String { return title }
+            if let task = json["task"] as? [String: Any], let t = task["title"] as? String { return t }
+        }
+        return nil
     }
 
     // MARK: - Helpers

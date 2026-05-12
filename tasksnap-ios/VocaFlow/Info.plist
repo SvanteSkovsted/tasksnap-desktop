@@ -2,7 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Standard bundle identity (substituted by Xcode at build time) -->
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -20,21 +19,8 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
 
-    <!-- Microphone access -->
     <key>NSMicrophoneUsageDescription</key>
     <string>VocaFlow needs microphone access to capture voice notes and turn them into tasks.</string>
-
-    <!-- Live Activities / Dynamic Island -->
-    <key>NSSupportsLiveActivities</key>
-    <true/>
-    <key>NSSupportsLiveActivitiesFrequentUpdates</key>
-    <true/>
-
-    <!-- Background audio so recording continues when app moves to background -->
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>audio</string>
-    </array>
 
     <key>UISupportedInterfaceOrientations</key>
     <array>
